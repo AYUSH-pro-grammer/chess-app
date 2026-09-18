@@ -1,70 +1,112 @@
-const board = document.getElementById("chessboard")
+const boardElement = document.getElementById("chessboard")
 
-const pieces = {
-    white: [5,3,3,10,9,3,3,5],
-    black: [-5,-3,-3,-10,-9,-3,-3,-5]
+
+const symbols = {
+    white: {
+        king: "♔",
+        queen: "♕",
+        rook: "♖",
+        bishop: "♗",
+        knight: "♘",
+        pawn: "♙"
+    },
+    black: {
+        king: "♚",
+        queen: "♛",
+        rook: "♜",
+        bishop: "♝",
+        knight: "♞",
+        pawn: "♟"
+    }
 }
 
-let alreadySelected = false;
-let selectedSquare = null;
 
-for (let row = 0; row < 8; row++){
+let board = []
+let currentTurn = "white";
+let selected = null;
+let gameOver = false
+
+function createPiece(type, color){
+    return {
+        type: type,
+        color: color
+    };
+}
+
+
+function createBoard(){
+
+    board = Array.from(
+        { length: 8}, ()=> Array(8).fill(null)
+    )
+
+    board[0] = [
+        createPiece("rook", "black"),
+        createPiece("knight", "black"),
+        createPiece("bishop", "black"),
+        createPiece("queen", "black"),
+        createPiece("king", "black"),
+        createPiece("bishop", "black"),
+        createPiece("knight", "black"),
+        createPiece("rook", "black")
+    ]
+
+    // drawing pawns black
+
     for (let col = 0; col < 8; col++){
-        const square = document.createElement("div")
+        board[1][col] = createPiece("pawn", "black")
+    }
 
-        square.addEventListener("click", function(){
+    // drawing pawns white 
 
-            if (!square.textContent){
-                return;
-            }
+    for (let col = 0; col < 8; col++){
+        board[6][col] = createPiece("pawn", "white")
+    }
 
-            if (alreadySelected){
-
-                if (selectedSquare == square){
-                    square.classList.remove("select");
-                    selectedSquare = null;
-                    alreadySelected = false;
-
-                } else {
-                    selectedSquare.classList.remove("select");
-                    square.classList.add("select");
-                    selectedSquare = square
-                    alreadySelected = true
-                }
+    board[7] = [
+        createPiece("rook", "white"),
+        createPiece("knight", "white"),
+        createPiece("bishop", "white"),
+        createPiece("queen", "white"),
+        createPiece("king", "white"),
+        createPiece("bishop", "white"),
+        createPiece("knight", "white"),
+        createPiece("rook", "white")
+    ]
 
 
+}
 
-            } else {
-                square.classList.add("select")
-                alreadySelected = true
-                selectedSquare = square
-            }
+function drawBoard(){
+    boardElement.innerHTML = "";
 
+    for (let row = 0; row<8; row++){
 
-        })
+        for (let col = 0; col < 8; col++){
+
+            const square = document.createElement("div");
 
         square.classList.add("square");
-
-
-        if ((row + col) % 2 == 0){
+        
+        if ((row + col) % 2 === 0){
             square.classList.add("light")
         } else {
             square.classList.add("dark")
         }
 
+        const piece = board[row][col]
 
-        if (row == 0){
-            square.textContent = pieces.black[col];
-        } if (row == 1){
-            square.textContent = "-1"
-        } if (row == 6){
-            square.textContent = "1"
-        } if ( row == 7){
-            square.textContent = pieces.white[col];
+        if (piece){
+            square.textContent = symbols[piece.color][piece.type];
         }
 
-        // adding squre to board 
+        boardElement.appendChild(square);
 
-        board.appendChild(square)
     }
 }
+}
+
+
+
+createBoard()
+drawBoard()

@@ -6,6 +6,8 @@ body{
     justify-content: center; 
     align-items: center;
     background: #f0f0f0;
+    flex-direction: column; 
+    
 
 }
 
@@ -36,6 +38,21 @@ body{
     border: 1px solid black;
     background-color: black;
     width: 100%;
-    height: calc (100% / 8);
+    height: calc(100% / 8);
 }
 
+.light{
+    background-color: #f0d9b5;
+}
+
+.dark{
+    background-color: #b58863;
+}
+
+.selected{
+    background: #7aaa45 !important;
+}
+
+.possible{
+    box-shadow: inset 0 0 0 6px rgba(50, 200 ,50 ,0.55)
+}
