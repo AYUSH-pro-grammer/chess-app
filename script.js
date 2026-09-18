@@ -86,7 +86,14 @@ function drawBoard(){
 
             const square = document.createElement("div");
 
+
         square.classList.add("square");
+        square.dataset.row = row;
+        square.dataset.col = col;
+
+        square.dataset.position = String.fromCharCode(97, col) + (8- row);
+
+
         
         if ((row + col) % 2 === 0){
             square.classList.add("light")
@@ -100,8 +107,36 @@ function drawBoard(){
             square.textContent = symbols[piece.color][piece.type];
         }
 
+        if (selected && selected.row === row && selected.col === col){
+            square.classList.add("selected")
+        }
+
+
+        square.addEventListener("click", ()=>{
+            const row = Number(square.dataset.row);
+            const col = Number(square.dataset.col);
+
+            const piece = board[row][col]
+
+            console.log(piece);
+
+            if (!piece){
+                return;
+            } 
+
+            selected = {
+                row: row,
+                col: col 
+            };
+
+            drawBoard();
+        })
+
+
+
         boardElement.appendChild(square);
 
+        
     }
 }
 }
